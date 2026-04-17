@@ -1,0 +1,14 @@
+# dependencies
+node_modules/
+
+# Tailwind build
+src/output.css
+
+# env files
+.env
+
+# logs
+npm-debug.log*
+
+# OS files
+.DS_Store
