@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Metriq — Education Analytics</title>
+  <link href="./src/css/output.css" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box;}
+    body{font-family:'Inter',sans-serif;background:#fafafa;color:#0a0a0a;overflow-x:hidden;}
+
+    /* Background */
+    .bg-grid{position:fixed;top:0;left:0;width:100%;height:100%;background-image:linear-gradient(rgba(0,0,0,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(0,0,0,0.04) 1px,transparent 1px);background-size:40px 40px;z-index:0;pointer-events:none;}
+    .bg-orb1{position:fixed;top:-200px;left:50%;transform:translateX(-50%);width:800px;height:800px;background:radial-gradient(circle,rgba(120,80,255,0.08) 0%,transparent 70%);z-index:0;pointer-events:none;}
+    .bg-orb2{position:fixed;top:200px;left:-100px;width:500px;height:500px;background:radial-gradient(circle,rgba(0,150,255,0.06) 0%,transparent 70%);z-index:0;pointer-events:none;}
+    .bg-orb3{position:fixed;top:100px;right:-100px;width:500px;height:500px;background:radial-gradient(circle,rgba(255,100,100,0.05) 0%,transparent 70%);z-index:0;pointer-events:none;}
+
+    /* Navbar */
+    nav{position:fixed;top:0;left:0;right:0;z-index:999;display:flex;align-items:center;justify-content:space-between;padding:1rem 3rem;background:rgba(250,250,250,0.7);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid rgba(0,0,0,0.06);}
+    .logo{font-size:1rem;font-weight:800;letter-spacing:-0.04em;position:relative;}
+    .logo::after{content:'';position:absolute;bottom:-2px;left:0;width:100%;height:1px;background:#0a0a0a;}
+    .nav-links{display:flex;gap:2rem;}
+    .nav-links a{text-decoration:none;font-size:0.82rem;color:#666;font-weight:500;transition:color 0.2s;}
+    .nav-links a:hover{color:#0a0a0a;}
+    .nav-right{display:flex;gap:0.75rem;align-items:center;}
+    .btn-ghost{font-size:0.82rem;color:#666;background:none;border:none;cursor:pointer;padding:0.5rem 1rem;font-family:'Inter',sans-serif;}
+    .btn-black{font-size:0.82rem;background:#0a0a0a;color:#fff;border:none;padding:0.55rem 1.25rem;border-radius:8px;cursor:pointer;font-weight:600;font-family:'Inter',sans-serif;letter-spacing:-0.01em;transition:background 0.2s,transform 0.1s;}
+    .btn-black:hover{background:#222;transform:translateY(-1px);}
+
+    /* Hero */
+    .hero{position:relative;z-index:1;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:8rem 2rem 6rem;}
+    .badge{display:inline-flex;align-items:center;gap:0.5rem;background:rgba(255,255,255,0.9);border:1px solid rgba(0,0,0,0.08);color:#555;font-size:0.72rem;font-weight:600;padding:0.45rem 1rem;border-radius:99px;margin-bottom:2rem;letter-spacing:0.04em;text-transform:uppercase;backdrop-filter:blur(10px);animation:fadeUp 0.6s ease forwards;}
+    .badge-dot{width:6px;height:6px;border-radius:50%;background:#7c3aed;animation:pulse 2s infinite;}
+    @keyframes pulse{0%,100%{opacity:1;transform:scale(1);}50%{opacity:0.5;transform:scale(0.8);}}
+    .hero-title{font-size:clamp(2.8rem,6.5vw,5.2rem);font-weight:900;letter-spacing:-0.05em;line-height:1.0;max-width:850px;margin-bottom:1.5rem;animation:fadeUp 0.7s 0.1s ease both;}
+    .hero-title .line2{background:linear-gradient(135deg,#c0c0c0 0%,#888 50%,#c0c0c0 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;background-size:200% auto;animation:shimmer 3s linear infinite;}
+    @keyframes shimmer{0%{background-position:0% center;}100%{background-position:200% center;}}
+    .hero-sub{font-size:1rem;color:#666;max-width:500px;line-height:1.8;margin-bottom:2.5rem;animation:fadeUp 0.7s 0.2s ease both;}
+    .hero-cta{display:flex;gap:0.75rem;animation:fadeUp 0.7s 0.3s ease both;}
+    .cta-primary{background:#0a0a0a;color:#fff;border:none;padding:0.85rem 2rem;border-radius:10px;font-size:0.875rem;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;letter-spacing:-0.01em;transition:all 0.2s;}
+    .cta-primary:hover{background:#1a1a1a;transform:translateY(-2px);box-shadow:0 8px 30px rgba(0,0,0,0.15);}
+    .cta-secondary{background:rgba(255,255,255,0.8);color:#0a0a0a;border:1px solid rgba(0,0,0,0.1);padding:0.85rem 2rem;border-radius:10px;font-size:0.875rem;font-weight:500;cursor:pointer;font-family:'Inter',sans-serif;backdrop-filter:blur(10px);transition:all 0.2s;}
+    .cta-secondary:hover{border-color:rgba(0,0,0,0.25);transform:translateY(-2px);}
+    .scroll-hint{margin-top:4rem;display:flex;flex-direction:column;align-items:center;gap:0.5rem;color:#bbb;font-size:0.75rem;animation:fadeUp 0.7s 0.5s ease both;}
+    .scroll-line{width:1px;height:40px;background:linear-gradient(to bottom,transparent,#ccc);animation:scrollDown 2s ease infinite;}
+    @keyframes scrollDown{0%{transform:scaleY(0);transform-origin:top;}50%{transform:scaleY(1);transform-origin:top;}51%{transform:scaleY(1);transform-origin:bottom;}100%{transform:scaleY(0);transform-origin:bottom;}}
+
+    /* Stats */
+    .stats-section{position:relative;z-index:1;padding:0 3rem;}
+    .stats-inner{display:grid;grid-template-columns:repeat(4,1fr);border:1px solid rgba(0,0,0,0.07);border-radius:16px;background:rgba(255,255,255,0.7);backdrop-filter:blur(20px);overflow:hidden;}
+    .stat{padding:2rem 1.5rem;text-align:center;border-right:1px solid rgba(0,0,0,0.06);transition:background 0.3s;}
+    .stat:last-child{border-right:none;}
+    .stat:hover{background:rgba(255,255,255,0.95);}
+    .stat-val{font-size:2.2rem;font-weight:900;letter-spacing:-0.05em;margin-bottom:0.3rem;}
+    .stat-label{font-size:0.75rem;color:#999;font-weight:500;letter-spacing:0.03em;text-transform:uppercase;}
+
+    /* Sections */
+    .section-label{display:inline-block;font-size:0.7rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#999;margin-bottom:1rem;}
+    .section-title{font-size:clamp(1.8rem,3.5vw,2.8rem);font-weight:900;letter-spacing:-0.04em;line-height:1.1;margin-bottom:1rem;}
+    .section-sub{font-size:0.95rem;color:#777;line-height:1.8;max-width:460px;}
+
+    /* Features */
+    .features-section{position:relative;z-index:1;padding:7rem 3rem;}
+    .features-header{margin-bottom:3.5rem;}
+    .features-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:rgba(0,0,0,0.06);border:1px solid rgba(0,0,0,0.06);border-radius:16px;overflow:hidden;}
+    .feature-card{background:#fff;padding:2rem;transition:background 0.3s;}
+    .feature-card:hover{background:#fafffe;}
+    .feature-icon{width:38px;height:38px;background:#f5f5f5;border-radius:9px;display:flex;align-items:center;justify-content:center;margin-bottom:1.25rem;font-size:15px;border:1px solid rgba(0,0,0,0.06);}
+    .feature-title{font-size:0.95rem;font-weight:700;letter-spacing:-0.02em;margin-bottom:0.5rem;}
+    .feature-desc{font-size:0.82rem;color:#888;line-height:1.75;}
+
+    /* Pipeline */
+    .pipeline-section{position:relative;z-index:1;padding:5rem 3rem;}
+    .pipeline-steps{display:flex;flex-direction:column;gap:0;border:1px solid rgba(0,0,0,0.07);border-radius:16px;overflow:hidden;background:#fff;}
+    .pipeline-step{display:flex;align-items:center;gap:1.5rem;padding:1.25rem 1.75rem;border-bottom:1px solid rgba(0,0,0,0.05);transition:background 0.2s;}
+    .pipeline-step:last-child{border-bottom:none;}
+    .pipeline-step:hover{background:#fafafa;}
+    .step-num{font-size:0.72rem;font-weight:700;color:#ccc;letter-spacing:0.05em;min-width:28px;}
+    .step-name{font-size:0.88rem;font-weight:600;letter-spacing:-0.01em;}
+    .step-desc{font-size:0.8rem;color:#999;margin-left:auto;}
+    .step-badge{font-size:0.68rem;font-weight:600;padding:0.25rem 0.6rem;border-radius:99px;margin-left:1rem;}
+    .badge-clean{background:#f0fdf4;color:#16a34a;}
+    .badge-mine{background:#eff6ff;color:#2563eb;}
+    .badge-algo{background:#faf5ff;color:#7c3aed;}
+
+    /* CTA Box */
+    .cta-section{position:relative;z-index:1;padding:7rem 3rem;text-align:center;}
+    .cta-box{background:#0a0a0a;border-radius:20px;padding:5rem 3rem;position:relative;overflow:hidden;}
+    .cta-box::before{content:'';position:absolute;top:-100px;left:50%;transform:translateX(-50%);width:600px;height:400px;background:radial-gradient(circle,rgba(120,80,255,0.15) 0%,transparent 70%);pointer-events:none;}
+    .cta-box-title{font-size:clamp(2rem,4vw,3rem);font-weight:900;letter-spacing:-0.04em;color:#fff;margin-bottom:1rem;position:relative;}
+    .cta-box-sub{color:#666;font-size:0.95rem;line-height:1.8;margin-bottom:2rem;position:relative;}
+    .cta-box-btn{background:#fff;color:#0a0a0a;border:none;padding:0.9rem 2.5rem;border-radius:10px;font-size:0.9rem;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;transition:all 0.2s;position:relative;}
+    .cta-box-btn:hover{transform:translateY(-2px);box-shadow:0 8px 30px rgba(255,255,255,0.2);}
+
+    /* Footer */
+    footer{position:relative;z-index:1;padding:2rem 3rem;border-top:1px solid rgba(0,0,0,0.06);display:flex;justify-content:space-between;align-items:center;}
+    .footer-logo{font-size:0.9rem;font-weight:800;letter-spacing:-0.03em;}
+    .footer-text{font-size:0.78rem;color:#bbb;}
+
+    /* Animations */
+    @keyframes fadeUp{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
+    .reveal{opacity:0;transform:translateY(24px);transition:opacity 0.7s ease,transform 0.7s ease;}
+    .reveal.visible{opacity:1;transform:translateY(0);}
+  </style>
+</head>
+<body>
+
+  <!-- Background Effects -->
+  <div class="bg-grid"></div>
+  <div class="bg-orb1"></div>
+  <div class="bg-orb2"></div>
+  <div class="bg-orb3"></div>
+
+  <!-- Navbar -->
+  <nav>
+    <div class="logo">Metriq</div>
+    <div class="nav-links">
+      <a href="./pages/dashboard.html">Dashboard</a>
+      <a href="./pages/pipeline.html">Pipeline</a>
+      <a href="./pages/pca.html">Clusters</a>
+      <a href="./pages/predict.html">Predict</a>
+    </div>
+    <div class="nav-right">
+      <button class="btn-ghost">Sign in</button>
+      <button class="btn-black">Get Started →</button>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="badge">
+      <span class="badge-dot"></span>
+      AI-Powered Education Analytics
+    </div>
+    <h1 class="hero-title">
+      Understand How<br/>
+      <span class="line2">Students Learn.</span>
+    </h1>
+    <p class="hero-sub">
+      Metriq mines, analyzes, and visualizes online learn
