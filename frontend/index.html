@@ -5,137 +5,420 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Metriq — Education Analytics</title>
   <link href="./src/css/output.css" rel="stylesheet"/>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet"/>
-  <style>
-    *{margin:0;padding:0;box-sizing:border-box;}
-    body{font-family:'Inter',sans-serif;background:#fafafa;color:#0a0a0a;overflow-x:hidden;}
-
-    /* Background */
-    .bg-grid{position:fixed;top:0;left:0;width:100%;height:100%;background-image:linear-gradient(rgba(0,0,0,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(0,0,0,0.04) 1px,transparent 1px);background-size:40px 40px;z-index:0;pointer-events:none;}
-    .bg-orb1{position:fixed;top:-200px;left:50%;transform:translateX(-50%);width:800px;height:800px;background:radial-gradient(circle,rgba(120,80,255,0.08) 0%,transparent 70%);z-index:0;pointer-events:none;}
-    .bg-orb2{position:fixed;top:200px;left:-100px;width:500px;height:500px;background:radial-gradient(circle,rgba(0,150,255,0.06) 0%,transparent 70%);z-index:0;pointer-events:none;}
-    .bg-orb3{position:fixed;top:100px;right:-100px;width:500px;height:500px;background:radial-gradient(circle,rgba(255,100,100,0.05) 0%,transparent 70%);z-index:0;pointer-events:none;}
-
-    /* Navbar */
-    nav{position:fixed;top:0;left:0;right:0;z-index:999;display:flex;align-items:center;justify-content:space-between;padding:1rem 3rem;background:rgba(250,250,250,0.7);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid rgba(0,0,0,0.06);}
-    .logo{font-size:1rem;font-weight:800;letter-spacing:-0.04em;position:relative;}
-    .logo::after{content:'';position:absolute;bottom:-2px;left:0;width:100%;height:1px;background:#0a0a0a;}
-    .nav-links{display:flex;gap:2rem;}
-    .nav-links a{text-decoration:none;font-size:0.82rem;color:#666;font-weight:500;transition:color 0.2s;}
-    .nav-links a:hover{color:#0a0a0a;}
-    .nav-right{display:flex;gap:0.75rem;align-items:center;}
-    .btn-ghost{font-size:0.82rem;color:#666;background:none;border:none;cursor:pointer;padding:0.5rem 1rem;font-family:'Inter',sans-serif;}
-    .btn-black{font-size:0.82rem;background:#0a0a0a;color:#fff;border:none;padding:0.55rem 1.25rem;border-radius:8px;cursor:pointer;font-weight:600;font-family:'Inter',sans-serif;letter-spacing:-0.01em;transition:background 0.2s,transform 0.1s;}
-    .btn-black:hover{background:#222;transform:translateY(-1px);}
-
-    /* Hero */
-    .hero{position:relative;z-index:1;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:8rem 2rem 6rem;}
-    .badge{display:inline-flex;align-items:center;gap:0.5rem;background:rgba(255,255,255,0.9);border:1px solid rgba(0,0,0,0.08);color:#555;font-size:0.72rem;font-weight:600;padding:0.45rem 1rem;border-radius:99px;margin-bottom:2rem;letter-spacing:0.04em;text-transform:uppercase;backdrop-filter:blur(10px);animation:fadeUp 0.6s ease forwards;}
-    .badge-dot{width:6px;height:6px;border-radius:50%;background:#7c3aed;animation:pulse 2s infinite;}
-    @keyframes pulse{0%,100%{opacity:1;transform:scale(1);}50%{opacity:0.5;transform:scale(0.8);}}
-    .hero-title{font-size:clamp(2.8rem,6.5vw,5.2rem);font-weight:900;letter-spacing:-0.05em;line-height:1.0;max-width:850px;margin-bottom:1.5rem;animation:fadeUp 0.7s 0.1s ease both;}
-    .hero-title .line2{background:linear-gradient(135deg,#c0c0c0 0%,#888 50%,#c0c0c0 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;background-size:200% auto;animation:shimmer 3s linear infinite;}
-    @keyframes shimmer{0%{background-position:0% center;}100%{background-position:200% center;}}
-    .hero-sub{font-size:1rem;color:#666;max-width:500px;line-height:1.8;margin-bottom:2.5rem;animation:fadeUp 0.7s 0.2s ease both;}
-    .hero-cta{display:flex;gap:0.75rem;animation:fadeUp 0.7s 0.3s ease both;}
-    .cta-primary{background:#0a0a0a;color:#fff;border:none;padding:0.85rem 2rem;border-radius:10px;font-size:0.875rem;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;letter-spacing:-0.01em;transition:all 0.2s;}
-    .cta-primary:hover{background:#1a1a1a;transform:translateY(-2px);box-shadow:0 8px 30px rgba(0,0,0,0.15);}
-    .cta-secondary{background:rgba(255,255,255,0.8);color:#0a0a0a;border:1px solid rgba(0,0,0,0.1);padding:0.85rem 2rem;border-radius:10px;font-size:0.875rem;font-weight:500;cursor:pointer;font-family:'Inter',sans-serif;backdrop-filter:blur(10px);transition:all 0.2s;}
-    .cta-secondary:hover{border-color:rgba(0,0,0,0.25);transform:translateY(-2px);}
-    .scroll-hint{margin-top:4rem;display:flex;flex-direction:column;align-items:center;gap:0.5rem;color:#bbb;font-size:0.75rem;animation:fadeUp 0.7s 0.5s ease both;}
-    .scroll-line{width:1px;height:40px;background:linear-gradient(to bottom,transparent,#ccc);animation:scrollDown 2s ease infinite;}
-    @keyframes scrollDown{0%{transform:scaleY(0);transform-origin:top;}50%{transform:scaleY(1);transform-origin:top;}51%{transform:scaleY(1);transform-origin:bottom;}100%{transform:scaleY(0);transform-origin:bottom;}}
-
-    /* Stats */
-    .stats-section{position:relative;z-index:1;padding:0 3rem;}
-    .stats-inner{display:grid;grid-template-columns:repeat(4,1fr);border:1px solid rgba(0,0,0,0.07);border-radius:16px;background:rgba(255,255,255,0.7);backdrop-filter:blur(20px);overflow:hidden;}
-    .stat{padding:2rem 1.5rem;text-align:center;border-right:1px solid rgba(0,0,0,0.06);transition:background 0.3s;}
-    .stat:last-child{border-right:none;}
-    .stat:hover{background:rgba(255,255,255,0.95);}
-    .stat-val{font-size:2.2rem;font-weight:900;letter-spacing:-0.05em;margin-bottom:0.3rem;}
-    .stat-label{font-size:0.75rem;color:#999;font-weight:500;letter-spacing:0.03em;text-transform:uppercase;}
-
-    /* Sections */
-    .section-label{display:inline-block;font-size:0.7rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#999;margin-bottom:1rem;}
-    .section-title{font-size:clamp(1.8rem,3.5vw,2.8rem);font-weight:900;letter-spacing:-0.04em;line-height:1.1;margin-bottom:1rem;}
-    .section-sub{font-size:0.95rem;color:#777;line-height:1.8;max-width:460px;}
-
-    /* Features */
-    .features-section{position:relative;z-index:1;padding:7rem 3rem;}
-    .features-header{margin-bottom:3.5rem;}
-    .features-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:rgba(0,0,0,0.06);border:1px solid rgba(0,0,0,0.06);border-radius:16px;overflow:hidden;}
-    .feature-card{background:#fff;padding:2rem;transition:background 0.3s;}
-    .feature-card:hover{background:#fafffe;}
-    .feature-icon{width:38px;height:38px;background:#f5f5f5;border-radius:9px;display:flex;align-items:center;justify-content:center;margin-bottom:1.25rem;font-size:15px;border:1px solid rgba(0,0,0,0.06);}
-    .feature-title{font-size:0.95rem;font-weight:700;letter-spacing:-0.02em;margin-bottom:0.5rem;}
-    .feature-desc{font-size:0.82rem;color:#888;line-height:1.75;}
-
-    /* Pipeline */
-    .pipeline-section{position:relative;z-index:1;padding:5rem 3rem;}
-    .pipeline-steps{display:flex;flex-direction:column;gap:0;border:1px solid rgba(0,0,0,0.07);border-radius:16px;overflow:hidden;background:#fff;}
-    .pipeline-step{display:flex;align-items:center;gap:1.5rem;padding:1.25rem 1.75rem;border-bottom:1px solid rgba(0,0,0,0.05);transition:background 0.2s;}
-    .pipeline-step:last-child{border-bottom:none;}
-    .pipeline-step:hover{background:#fafafa;}
-    .step-num{font-size:0.72rem;font-weight:700;color:#ccc;letter-spacing:0.05em;min-width:28px;}
-    .step-name{font-size:0.88rem;font-weight:600;letter-spacing:-0.01em;}
-    .step-desc{font-size:0.8rem;color:#999;margin-left:auto;}
-    .step-badge{font-size:0.68rem;font-weight:600;padding:0.25rem 0.6rem;border-radius:99px;margin-left:1rem;}
-    .badge-clean{background:#f0fdf4;color:#16a34a;}
-    .badge-mine{background:#eff6ff;color:#2563eb;}
-    .badge-algo{background:#faf5ff;color:#7c3aed;}
-
-    /* CTA Box */
-    .cta-section{position:relative;z-index:1;padding:7rem 3rem;text-align:center;}
-    .cta-box{background:#0a0a0a;border-radius:20px;padding:5rem 3rem;position:relative;overflow:hidden;}
-    .cta-box::before{content:'';position:absolute;top:-100px;left:50%;transform:translateX(-50%);width:600px;height:400px;background:radial-gradient(circle,rgba(120,80,255,0.15) 0%,transparent 70%);pointer-events:none;}
-    .cta-box-title{font-size:clamp(2rem,4vw,3rem);font-weight:900;letter-spacing:-0.04em;color:#fff;margin-bottom:1rem;position:relative;}
-    .cta-box-sub{color:#666;font-size:0.95rem;line-height:1.8;margin-bottom:2rem;position:relative;}
-    .cta-box-btn{background:#fff;color:#0a0a0a;border:none;padding:0.9rem 2.5rem;border-radius:10px;font-size:0.9rem;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;transition:all 0.2s;position:relative;}
-    .cta-box-btn:hover{transform:translateY(-2px);box-shadow:0 8px 30px rgba(255,255,255,0.2);}
-
-    /* Footer */
-    footer{position:relative;z-index:1;padding:2rem 3rem;border-top:1px solid rgba(0,0,0,0.06);display:flex;justify-content:space-between;align-items:center;}
-    .footer-logo{font-size:0.9rem;font-weight:800;letter-spacing:-0.03em;}
-    .footer-text{font-size:0.78rem;color:#bbb;}
-
-    /* Animations */
-    @keyframes fadeUp{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
-    .reveal{opacity:0;transform:translateY(24px);transition:opacity 0.7s ease,transform 0.7s ease;}
-    .reveal.visible{opacity:1;transform:translateY(0);}
-  </style>
+  <link href="./src/css/custom.css" rel="stylesheet"/>
 </head>
 <body>
 
-  <!-- Background Effects -->
-  <div class="bg-grid"></div>
-  <div class="bg-orb1"></div>
-  <div class="bg-orb2"></div>
-  <div class="bg-orb3"></div>
-
-  <!-- Navbar -->
-  <nav>
-    <div class="logo">Metriq</div>
+<!-- NAVBAR -->
+<nav>
+  <div class="nav-inner">
+    <a class="nav-brand" href="#">
+      <div class="nav-logo">M</div>
+      <span class="nav-name">Metriq</span>
+    </a>
+    <div class="nav-sep"></div>
     <div class="nav-links">
-      <a href="./pages/dashboard.html">Dashboard</a>
-      <a href="./pages/pipeline.html">Pipeline</a>
-      <a href="./pages/pca.html">Clusters</a>
-      <a href="./pages/predict.html">Predict</a>
+      <a href="#" class="active">Home</a>
+      <a href="#features">Features</a>
+      <a href="#pipeline">Pipeline</a>
+      <a href="#about">About</a>
+      <a href="#faq">FAQ</a>
     </div>
     <div class="nav-right">
-      <button class="btn-ghost">Sign in</button>
-      <button class="btn-black">Get Started →</button>
+      <button class="theme-toggle" id="themeBtn" onclick="toggleTheme()" title="Toggle theme">
+        <span class="icon-moon">🌙</span>
+        <span class="icon-sun">☀️</span>
+      </button>
+      <button class="btn-ghost">GitHub</button>
+      <button class="btn-primary">Get Started</button>
+      <div class="hamburger" id="hb" onclick="toggleMenu()">
+        <span></span><span></span><span></span>
+      </div>
     </div>
-  </nav>
+  </div>
+</nav>
 
-  <!-- Hero -->
-  <section class="hero">
-    <div class="badge">
-      <span class="badge-dot"></span>
-      AI-Powered Education Analytics
+<!-- MOBILE MENU -->
+<div class="mobile-menu" id="mm">
+  <a href="#" onclick="toggleMenu()">Home</a>
+  <a href="#features" onclick="toggleMenu()">Features</a>
+  <a href="#pipeline" onclick="toggleMenu()">Pipeline</a>
+  <a href="#about" onclick="toggleMenu()">About</a>
+  <a href="#faq" onclick="toggleMenu()">FAQ</a>
+  <div class="mobile-menu-btns">
+    <button class="btn-ghost" style="flex:1;">GitHub</button>
+    <button class="btn-primary" style="flex:1;">Get Started</button>
+  </div>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-glow"></div>
+  <div class="hero-grid"></div>
+  <div class="badge"><span class="badge-dot"></span>AI-Powered Education Analytics</div>
+  <h1 class="hero-title">Understand How<br/><span class="muted">Students Learn.</span></h1>
+  <p class="hero-sub">Metriq mines, analyzes, and visualizes online learning behavior — predicting dropout risk and uncovering what drives student success.</p>
+  <div class="hero-cta">
+    <button class="cta-p">Explore the Data →</button>
+    <button class="cta-s">▶ Watch Demo</button>
+  </div>
+
+  <!-- INTERACTIVE CARDS -->
+  <div class="interactive-grid">
+    <div class="icard">
+      <div class="icard-header">
+        <div class="icard-title">PCA Cluster View</div>
+        <div class="icard-sub">Drag to rotate · 3 clusters</div>
+      </div>
+      <canvas id="scat"></canvas>
     </div>
-    <h1 class="hero-title">
-      Understand How<br/>
-      <span class="line2">Students Learn.</span>
-    </h1>
-    <p class="hero-sub">
-      Metriq mines, analyzes, and visualizes online learn
+    <div class="icard">
+      <div class="icard-header">
+        <div class="icard-title">Risk Predictor</div>
+        <div class="icard-sub">Adjust sliders to simulate</div>
+      </div>
+      <div class="risk-body">
+        <div class="sl-row">
+          <div class="sl-lbl"><span>Login Frequency</span><span class="sl-val" id="lv">5x/week</span></div>
+          <input type="range" id="lr" min="0" max="10" value="5" step="1" oninput="updateRisk()"/>
+        </div>
+        <div class="sl-row">
+          <div class="sl-lbl"><span>Quiz Average</span><span class="sl-val" id="qv">70%</span></div>
+          <input type="range" id="qr" min="0" max="100" value="70" step="1" oninput="updateRisk()"/>
+        </div>
+        <div class="sl-row">
+          <div class="sl-lbl"><span>Time Spent / Week</span><span class="sl-val" id="tv">4hrs</span></div>
+          <input type="range" id="tr" min="0" max="10" value="4" step="1" oninput="updateRisk()"/>
+        </div>
+        <div class="risk-res" id="rr">
+          <div class="risk-lbl" id="rl">Risk Level</div>
+          <div class="risk-sc" id="rs">Low</div>
+        </div>
+      </div>
+    </div>
+    <div class="icard">
+      <div class="icard-header">
+        <div class="icard-title">Live Overview</div>
+        <div class="icard-sub">Hover to interact</div>
+      </div>
+      <div class="dash-body">
+        <div class="mini-stats">
+          <div class="mstat"><div class="ms-v">5,241</div><div class="ms-l">Students</div></div>
+          <div class="mstat"><div class="ms-v">68%</div><div class="ms-l">Completion</div></div>
+          <div class="mstat"><div class="ms-v">312</div><div class="ms-l">At Risk</div></div>
+          <div class="mstat"><div class="ms-v">94%</div><div class="ms-l">Accuracy</div></div>
+        </div>
+        <div class="mini-bars">
+          <div class="mbar" style="height:60%;background:#2a2a2a;"><div class="mbar-tip">Math 60%</div></div>
+          <div class="mbar" style="height:80%;background:#333;"><div class="mbar-tip">Science 80%</div></div>
+          <div class="mbar" style="height:45%;background:#1f1f1f;"><div class="mbar-tip">English 45%</div></div>
+          <div class="mbar" style="height:90%;background:#3a3a3a;"><div class="mbar-tip">Coding 90%</div></div>
+          <div class="mbar" style="height:55%;background:#2a2a2a;"><div class="mbar-tip">Design 55%</div></div>
+          <div class="mbar" style="height:70%;background:#333;"><div class="mbar-tip">Data 70%</div></div>
+          <div class="mbar" style="height:38%;background:#1f1f1f;"><div class="mbar-tip">Stats 38%</div></div>
+          <div class="mbar" style="height:85%;background:#3a3a3a;"><div class="mbar-tip">ML 85%</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STATS -->
+<section class="section reveal">
+  <div class="wrapper">
+    <div class="stats-grid">
+      <div class="stat-card"><div class="sv">5,000+</div><div class="sl">Students Analyzed</div></div>
+      <div class="stat-card"><div class="sv">3</div><div class="sl">Behavior Clusters</div></div>
+      <div class="stat-card"><div class="sv">94%</div><div class="sl">Prediction Accuracy</div></div>
+      <div class="stat-card"><div class="sv">17</div><div class="sl">Pipeline Steps</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section class="section reveal" id="features">
+  <div class="wrapper">
+    <span class="sec-label">Features</span>
+    <h2 class="sec-title">Everything in one platform.</h2>
+    <p class="sec-sub">From raw data to actionable insight — the full mining pipeline, visualized and interactive.</p>
+    <div class="bento">
+      <div class="bc wide">
+        <div class="bico">⚙</div>
+        <div class="btitle">Data Pipeline</div>
+        <div class="bdesc">A full 17-step data mining process — cleaning, feature engineering, and outlier removal, visualized step by step with before and after comparisons at every stage.</div>
+        <span class="btag">17 Steps</span>
+      </div>
+      <div class="bc">
+        <div class="bico">◎</div>
+        <div class="btitle">PCA & Clustering</div>
+        <div class="bdesc">Dimensionality reduction and K-Means reveal hidden student behavior groups from raw data.</div>
+        <span class="btag">Algorithm</span>
+      </div>
+      <div class="bc">
+        <div class="bico">▲</div>
+        <div class="btitle">Dropout Prediction</div>
+        <div class="bdesc">Predict population risk levels instantly — powered by patterns across the full dataset.</div>
+        <span class="btag">AI Powered</span>
+      </div>
+      <div class="bc wide">
+        <div class="bico">↑</div>
+        <div class="btitle">Live CSV Upload</div>
+        <div class="bdesc">Drag and drop a CSV and watch the pipeline run in real time — validating, cleaning, removing outliers, and inserting data automatically with a live step by step progress animation.</div>
+        <span class="btag">Live Pipeline</span>
+      </div>
+      <div class="bc">
+        <div class="bico">✦</div>
+        <div class="btitle">Survey Collection</div>
+        <div class="bdesc">Collect real behavior data from respondents. Every submission enriches the dataset live.</div>
+        <span class="btag">Live Data</span>
+      </div>
+      <div class="bc">
+        <div class="bico">◈</div>
+        <div class="btitle">Metis AI Chatbot</div>
+        <div class="bdesc">Ask Metis anything about the data, pipeline, or clusters. Powered by Gemini on every page.</div>
+        <span class="btag">Gemini</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PIPELINE -->
+<section class="section reveal" id="pipeline">
+  <div class="wrapper">
+    <span class="sec-label">Process</span>
+    <h2 class="sec-title">The pipeline, exposed.</h2>
+    <p class="sec-sub">Every data mining step is transparent, interactive, and explainable.</p>
+    <div class="pipe-wrap">
+      <div class="ps"><span class="pn">01</span><span class="pname">Load Dataset</span><span class="pbadge pb-i">Import</span><span class="pdesc">5,000+ rows loaded</span></div>
+      <div class="ps"><span class="pn">02</span><span class="pname">Inspect Structure</span><span class="pbadge pb-i">Explore</span><span class="pdesc">Shape, types, columns</span></div>
+      <div class="ps"><span class="pn">03</span><span class="pname">Summary Statistics</span><span class="pbadge pb-i">Analyze</span><span class="pdesc">Patterns & anomalies</span></div>
+      <div class="ps"><span class="pn">04</span><span class="pname">Identify Issues</span><span class="pbadge pb-c">Clean</span><span class="pdesc">Nulls, duplicates, outliers</span></div>
+      <div class="ps"><span class="pn">05</span><span class="pname">Handle Missing Values</span><span class="pbadge pb-c">Clean</span><span class="pdesc">Mean, median imputation</span></div>
+      <div class="ps"><span class="pn">06</span><span class="pname">Remove Duplicates</span><span class="pbadge pb-c">Clean</span><span class="pdesc">Exact duplicates removed</span></div>
+      <div class="ps"><span class="pn">07</span><span class="pname">Fix Inconsistencies</span><span class="pbadge pb-c">Clean</span><span class="pdesc">Normalized categories</span></div>
+      <div class="ps"><span class="pn">08</span><span class="pname">Fix Data Types</span><span class="pbadge pb-c">Clean</span><span class="pdesc">Numeric & date formats</span></div>
+      <div class="ps"><span class="pn">09</span><span class="pname">Handle Outliers</span><span class="pbadge pb-c">Clean</span><span class="pdesc">IQR method applied</span></div>
+      <div class="ps"><span class="pn">10</span><span class="pname">Visualizations</span><span class="pbadge pb-a">Visualize</span><span class="pdesc">Histogram, boxplot</span></div>
+      <div class="ps"><span class="pn">11</span><span class="pname">Feature Engineering</span><span class="pbadge pb-a">Engineer</span><span class="pdesc">3 new features</span></div>
+      <div class="ps"><span class="pn">12</span><span class="pname">Prepare for PCA</span><span class="pbadge pb-a">Algorithm</span><span class="pdesc">Scaling applied</span></div>
+      <div class="ps"><span class="pn">13</span><span class="pname">Apply PCA</span><span class="pbadge pb-a">Algorithm</span><span class="pdesc">2 components</span></div>
+      <div class="ps"><span class="pn">14</span><span class="pname">PCA Visualization</span><span class="pbadge pb-a">Algorithm</span><span class="pdesc">2D scatter plot</span></div>
+      <div class="ps"><span class="pn">15</span><span class="pname">PCA Interpretation</span><span class="pbadge pb-a">Algorithm</span><span class="pdesc">Variance explained</span></div>
+      <div class="ps"><span class="pn">16</span><span class="pname">Reflection</span><span class="pbadge pb-o">Output</span><span class="pdesc">Insights documented</span></div>
+      <div class="ps"><span class="pn">17</span><span class="pname">Save Clean Dataset</span><span class="pbadge pb-o">Output</span><span class="pdesc">cleaned_dataset.csv</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="section reveal" id="faq">
+  <div class="wrapper">
+    <span class="sec-label">FAQ</span>
+    <h2 class="sec-title">Common questions.</h2>
+    <p class="sec-sub">Everything you need to know about Metriq.</p>
+    <div class="faq-wrap">
+      <div class="faq-item">
+        <div class="faq-q">What is Metriq?<div class="faq-ico">+</div></div>
+        <div class="faq-a"><p>Metriq is an AI-powered education analytics platform that mines and analyzes online learning behavior data to identify student clusters, predict dropout risk, and surface insights that drive student success.</p></div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">Where does the data come from?<div class="faq-ico">+</div></div>
+        <div class="faq-a"><p>The base dataset is sourced from Kaggle — a public online learning dataset with 5,000+ records. Additional data can be contributed through the CSV upload feature or the live survey form.</p></div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">What does the Data Pipeline page show?<div class="faq-ico">+</div></div>
+        <div class="faq-a"><p>It walks through all 17 steps of the data mining process — from loading the raw dataset to saving the cleaned output. Each step is interactive with before and after comparisons and plain English explanations.</p></div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">What are the 3 student clusters?<div class="faq-ico">+</div></div>
+        <div class="faq-a"><p>After applying PCA and K-Means clustering, students are grouped into three behavioral clusters — High Performers, Passive Learners, and At-Risk — based on their engagement, completion, and activity patterns.</p></div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">Who is Metis?<div class="faq-ico">+</div></div>
+        <div class="faq-a"><p>Metis is the AI chatbot built into Metriq, powered by the Gemini API. Named after the Greek goddess of wisdom, Metis answers questions about the data, explains pipeline steps, and helps interpret cluster results.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DEVELOPERS -->
+<section class="section reveal" id="about">
+  <div class="wrapper">
+    <span class="sec-label">Developers</span>
+    <h2 class="sec-title">Built by two people.</h2>
+    <p class="sec-sub">Designed and developed as a final project for Data Mining and Information Management.</p>
+    <div class="dev-grid">
+      <div class="dev-card">
+        <div class="dev-avatar">LL</div>
+        <div class="dev-name">Lelius Lawas</div>
+        <div class="dev-role">Data Mining · Frontend · Backend · AI Integration</div>
+        <span class="dev-course">BSCS-2</span>
+        <div class="dev-links">
+          <a class="dev-btn dev-btn-w" href="#">GitHub →</a>
+          <a class="dev-btn dev-btn-o" href="#">LinkedIn</a>
+        </div>
+      </div>
+      <div class="dev-card">
+        <div class="dev-avatar">JD</div>
+        <div class="dev-name">John Mark Dayaday</div>
+        <div class="dev-role">Data Analyst · Database Design · Pipeline Architecture</div>
+        <span class="dev-course">BSCS-2</span>
+        <div class="dev-links">
+          <a class="dev-btn dev-btn-w" href="#">GitHub →</a>
+          <a class="dev-btn dev-btn-o" href="#">LinkedIn</a>
+        </div>
+      </div>
+      <div class="stack-row">
+        <div class="stack-lbl">Tech Stack</div>
+        <div class="stack-list">
+          <div class="stack-item"><div class="sdot" style="background:#6366f1;"></div><div class="sname">Tailwind CSS</div></div>
+          <div class="stack-item"><div class="sdot" style="background:#f59e0b;"></div><div class="sname">JavaScript</div></div>
+          <div class="stack-item"><div class="sdot" style="background:#10b981;"></div><div class="sname">Node.js</div></div>
+          <div class="stack-item"><div class="sdot" style="background:#8b5cf6;"></div><div class="sname">Python</div></div>
+          <div class="stack-item"><div class="sdot" style="background:#0ea5e9;"></div><div class="sname">Supabase</div></div>
+          <div class="stack-item"><div class="sdot" style="background:#a78bfa;"></div><div class="sname">Gemini API</div></div>
+          <div class="stack-item"><div class="sdot" style="background:#ef4444;"></div><div class="sname">Three.js</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section reveal">
+  <div class="wrapper">
+    <div class="cta-box">
+      <h2 class="cta-title">Ready to explore the data?</h2>
+      <p class="cta-sub">Dive into the dashboard, run the pipeline,<br/>or let Metis guide you through the insights.</p>
+      <button class="cta-btn">Open Dashboard →</button>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-logo">Metriq</div>
+    <div class="footer-text">Data Mining & Information Management · 2025</div>
+  </div>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+/* THEME */
+function toggleTheme() {
+  document.body.classList.toggle('light');
+  localStorage.setItem('theme', document.body.classList.contains('light') ? 'light' : 'dark');
+}
+if (localStorage.getItem('theme') === 'light') document.body.classList.add('light');
+
+/* MOBILE MENU */
+function toggleMenu() { document.getElementById('mm').classList.toggle('open'); }
+
+/* SCROLL REVEAL */
+const obs = new IntersectionObserver(es => {
+  es.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.06 });
+document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+
+/* FAQ */
+document.querySelectorAll('.faq-q').forEach(q => {
+  q.addEventListener('click', () => {
+    const it = q.parentElement, was = it.classList.contains('open');
+    document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+    if (!was) it.classList.add('open');
+  });
+});
+
+/* RISK PREDICTOR */
+function updateRisk() {
+  const l = parseInt(document.getElementById('lr').value);
+  const q = parseInt(document.getElementById('qr').value);
+  const t = parseInt(document.getElementById('tr').value);
+  document.getElementById('lv').textContent = l + 'x/week';
+  document.getElementById('qv').textContent = q + '%';
+  document.getElementById('tv').textContent = t + 'hrs';
+  const score = (l / 10) * 0.35 + (q / 100) * 0.4 + (t / 10) * 0.25;
+  const rr = document.getElementById('rr');
+  const rl = document.getElementById('rl');
+  const rs = document.getElementById('rs');
+  if (score >= 0.65) {
+    rr.style.borderColor = '#14532d'; rl.style.color = '#22c55e'; rs.style.color = '#22c55e'; rs.textContent = 'Low';
+  } else if (score >= 0.4) {
+    rr.style.borderColor = '#78350f'; rl.style.color = '#f59e0b'; rs.style.color = '#f59e0b'; rs.textContent = 'Medium';
+  } else {
+    rr.style.borderColor = '#7f1d1d'; rl.style.color = '#ef4444'; rs.style.color = '#ef4444'; rs.textContent = 'High';
+  }
+}
+updateRisk();
+
+/* 3D SCATTER */
+const c = document.getElementById('scat');
+const pw = c.parentElement.clientWidth || 320;
+c.width = pw; c.height = 188;
+const renderer = new THREE.WebGLRenderer({ canvas: c, antialias: true, alpha: true });
+renderer.setPixelRatio(window.devicePixelRatio);
+renderer.setSize(pw, 188);
+renderer.setClearColor(0x000000, 0);
+const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(55, pw / 188, 0.1, 1000);
+camera.position.set(0, 0, 22);
+const group = new THREE.Group();
+[
+  { color: 0x22c55e, cx: -4, cy: 3, cz: -1, n: 55 },
+  { color: 0xf59e0b, cx: 4, cy: -2, cz: 2, n: 50 },
+  { color: 0xef4444, cx: 0, cy: -4, cz: -3, n: 40 }
+].forEach(cl => {
+  const pos = [];
+  for (let i = 0; i < cl.n; i++) pos.push(
+    cl.cx + (Math.random() - .5) * 6,
+    cl.cy + (Math.random() - .5) * 6,
+    cl.cz + (Math.random() - .5) * 6
+  );
+  const geo = new THREE.BufferGeometry();
+  geo.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3));
+  group.add(new THREE.Points(geo, new THREE.PointsMaterial({ color: cl.color, size: 0.25, transparent: true, opacity: 0.85 })));
+  const s = new THREE.Mesh(
+    new THREE.SphereGeometry(0.28, 16, 16),
+    new THREE.MeshBasicMaterial({ color: cl.color, transparent: true, opacity: 0.12 })
+  );
+  s.position.set(cl.cx, cl.cy, cl.cz);
+  group.add(s);
+});
+[
+  [[-10, 0, 0], [10, 0, 0]],
+  [[0, -10, 0], [0, 10, 0]],
+  [[0, 0, -10], [0, 0, 10]]
+].forEach(([a, b]) => {
+  group.add(new THREE.Line(
+    new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(...a), new THREE.Vector3(...b)]),
+    new THREE.LineBasicMaterial({ color: 0x1f1f1f, transparent: true, opacity: 0.8 })
+  ));
+});
+scene.add(group);
+let drag = false, px = 0, py = 0;
+c.addEventListener('mousedown', e => { drag = true; px = e.clientX; py = e.clientY; });
+window.addEventListener('mouseup', () => drag = false);
+window.addEventListener('mousemove', e => {
+  if (!drag) return;
+  group.rotation.y += (e.clientX - px) * 0.01;
+  group.rotation.x += (e.clientY - py) * 0.01;
+  px = e.clientX; py = e.clientY;
+});
+c.addEventListener('touchstart', e => { drag = true; px = e.touches[0].clientX; py = e.touches[0].clientY; }, { passive: true });
+c.addEventListener('touchend', () => drag = false);
+c.addEventListener('touchmove', e => {
+  if (!drag) return;
+  group.rotation.y += (e.touches[0].clientX - px) * 0.01;
+  group.rotation.x += (e.touches[0].clientY - py) * 0.01;
+  px = e.touches[0].clientX; py = e.touches[0].clientY;
+}, { passive: true });
+(function animate() {
+  requestAnimationFrame(animate);
+  if (!drag) { group.rotation.y += 0.004; group.rotation.x += 0.001; }
+  renderer.render(scene, camera);
+})();
+</script>
+
+</body>
+</html>

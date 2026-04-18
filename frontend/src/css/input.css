@@ -1,1 +1,7 @@
 @import "tailwindcss";
+ 
+@layer components {
+  .section-wrap {
+    @apply max-w-[1100px] mx-auto px-8;
+  }
+}
